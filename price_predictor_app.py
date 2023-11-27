@@ -9,7 +9,7 @@ import pandas as pd
 import requests
 import streamlit as st
 import streamlit.components.v1 as components
-from pandas.io.json import json_normalize
+#from pandas.io.json import json_normalize
 
 _ENABLE_PROFILING = False
 
@@ -22,14 +22,15 @@ if _ENABLE_PROFILING:
 today = date.today()
 
 st.set_page_config(
-    page_title="COVID19: EpiCenter for Disease Dynamics",
+    page_title="Short-term Rental Pricing Predictor",
     layout='wide',
     initial_sidebar_state='auto',
 )
 
 sidebar_selection = st.sidebar.radio(
     'Select data:',
-    ['Select Counties', 'California'],
+    ['columbus','los-angeles', 'new-york-city','fort-worth', 'boston', 'broward-county',
+     'chicago', 'austin', 'seattle', 'rochester', 'san-francisco'],
 )
 
 @st.cache(ttl=3*60*60, suppress_st_warning=True)
@@ -531,31 +532,28 @@ def plot_state():
 ## functions end here, title, sidebar setting and descriptions start here
 t1, t2 = st.columns(2)
 with t1:
-    st.markdown('# COVID-19 Data and Reporting')
+    st.markdown('Short-term Rental Pricing Predictor')
 
 with t2:
     st.write("")
     st.write("")
     st.write("""
-    **EpiCenter for Disease Dynamics** | School of Veterinary Medicine - UC Davis
+    Prediction data provided by InsideAirbnb | Neighborhood level data provided by Department of Housing and Urban Development
     """)
 
 st.write("")
 st.markdown("""
-COVID-Local provides basic key metrics against which to assess pandemic response and progress toward reopening.  
-Phase 2: Initial re-opening: Current esetimate of <25 cases per 100,000 population per day  
-Phase 3: Economic recovery: Current estimate of <10 cases per 100,000 population per day   
-*daily testing data currently available only for Los Angeles County, Orange County, and San Diego County  
+The short-term rental market landscape is quickly changing as inflation in operating expenses, increasing interest rates, and the end of covid stimulus threatens to erode operator profits. At the same time, the proliferation of properties owned solely for short term rental purposes has seen an inflationary impact on housing markets and has threatened renter affordability. Studies such as Horn and Merante's "Is home sharing driving up rents? Evidence from Airbnb in Boston", as well as Barron, Kung, and Proserpio's "The Sharing Economy and Housing Affordability: Evidence from Airbnb", have shown a significant impact of short term rental listings on the neighboring housing market. If this is true, and we believe as other studies such as Scott Susin’s "Rent vouchers and the price of low-income housing", show that the introduction of programs like housing vouchers have a direct impact on housing market affordability, we can logically connect the impact of the affordable housing market to the impact of short-term rentals on the private market.
 
-for more details related to thresholds please see  
-See more at https://www.covidlocal.org/metrics/.    
+Our mission is to create a toolset that will allow owner/operators to predict their optimal rental prices, and also visualize their property’s location and provide insight on the impact of listing their property in that neighborhood.
 
-For additional information please contact *epicenter@ucdavis.edu* or visit https://ohi.vetmed.ucdavis.edu/centers/epicenter-disease-dynamics.  
+
+For additional information please contact *ryanwt@umich.edu* or *moura@umich.edu*.  
 """)
 
 
-if sidebar_selection == 'Select Counties':
-    st.markdown('## Select counties of interest')
+if sidebar_selection == 'Select Neighborhoods':
+    st.markdown('## Select neighborhoods of interest')
     CA_counties = confirmed[confirmed.Province_State == 'California'].Admin2.unique().tolist()
     counties = st.multiselect('', CA_counties, default=['Yolo', 'Solano', 'Sacramento'])
     # Limit to the first 5 counties.
